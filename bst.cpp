@@ -4,10 +4,10 @@
 #include <cstdlib>
 using namespace std;
 
-struct node
+struct bstNode
 {
-	node* left;
-	node* right;
+	bstNode* left;
+	bstNode* right;
 	int data;
 	int freq;
 };
@@ -15,13 +15,13 @@ struct node
 class BST
 {
 private:
-	node* sortedArrayToBST(int a[], int, int);
-	node* root = new node;
-	node* newNode(int);
+	bstNode* sortedArrayToBST(int a[], int, int);
+	bstNode* root = new bstNode;
+	bstNode* newNode(int);
 	bool isEmpty() const { return root==NULL; }
-	void inorderTrav(node*);
-	void preorderTrav(node*);
-	void postorderTrav(node*);
+	void inorderTrav(bstNode*);
+	void preorderTrav(bstNode*);
+	void postorderTrav(bstNode*);
 public:
 	BST()
 	{
@@ -29,30 +29,30 @@ public:
 	}
 	BST(int a[], int);
 	void inorder();
-	void inorder(node*);
+	void inorder(bstNode*);
 	void preorder();
-	void preorder(node*);
+	void preorder(bstNode*);
 	void postorder();
-	void postorder(node*);
+	void postorder(bstNode*);
 	void insert(int);
 	bool remove (int);
 	bool remove(int, char);
-	node * search(int);
+	bstNode * search(int);
 };
 
-node * BST::newNode(int data) {
-	node * tNode = new node;
+bstNode * BST::newNode(int data) {
+	bstNode * tNode = new bstNode;
 	tNode->data = data;
 	tNode->left = NULL;
 	tNode->right = NULL;
 	return tNode;
 }
 
-node * BST::sortedArrayToBST(int a[], int start, int end){
+bstNode * BST::sortedArrayToBST(int a[], int start, int end){
 	if (start > end)
 		return NULL;
 	int mid = (start + end + 1) / 2;
-	node * localRoot = newNode(a[mid]);
+	bstNode * localRoot = newNode(a[mid]);
 	localRoot->left = sortedArrayToBST(a, start, mid-1);
 	localRoot->right = sortedArrayToBST(a, mid+1, end);
 	return localRoot;
@@ -65,8 +65,8 @@ BST::BST(int a[], int len) {
 
 void BST::insert(int d)
 {
-	node* t = new node;
-	node* parent;
+	bstNode* t = new bstNode;
+	bstNode* parent;
 	t->data = d;
 	t->left = NULL;
 	t->right = NULL;
@@ -76,8 +76,8 @@ void BST::insert(int d)
 	if(isEmpty()) root = t;
 	else
 	{
-		//Note: ALL insertions are as leaf nodes
-		node* curr;
+		//Note: ALL insertions are as leaf bstNodes
+		bstNode* curr;
 		curr = root;
 		// Find the Node's parent
 		while(curr)
@@ -105,8 +105,8 @@ bool BST::remove(int d)
 		return NULL;
 	}
 
-	node* curr;
-	node* parent;
+	bstNode* curr;
+	bstNode* parent;
 	curr = root;
 
 	while(curr != NULL)
@@ -130,9 +130,9 @@ bool BST::remove(int d)
 
 
 	// 3 cases :
-	// 1. We're removing a leaf node
-	// 2. We're removing a node with a single child
-	// 3. we're removing a node with 2 children
+	// 1. We're removing a leaf bstNode
+	// 2. We're removing a bstNode with a single child
+	// 3. we're removing a bstNode with 2 children
 
 	// Node with single child
 	if((curr->left == NULL && curr->right != NULL)|| (curr->left != NULL
@@ -167,7 +167,7 @@ bool BST::remove(int d)
 		return true;
 	}
 
-	//We're looking at a leaf node
+	//We're looking at a leaf bstNode
 	if( curr->left == NULL && curr->right == NULL)
 	{
 		if(parent->left == curr) parent->left = NULL;
@@ -178,11 +178,11 @@ bool BST::remove(int d)
 
 
 	//Node with 2 children and c == p
-	// replace node with smallest value in left subtree
+	// replace bstNode with smallest value in left subtree
 
 	if (curr->left != NULL && curr->right != NULL)
 	{
-		node* chkl;
+		bstNode* chkl;
 		chkl = curr->left;
 		if((chkl->right == NULL) && (chkl->left == NULL))
 		{
@@ -192,13 +192,13 @@ bool BST::remove(int d)
 		}
 		else // left child has children
 		{
-			//if the node's left child has a right child
+			//if the bstNode's left child has a right child
 			// Move all the way down right to locate smallest element
 
 			if((curr->left)->right != NULL)
 			{
-				node* rcurr;
-				node* rcurrp;
+				bstNode* rcurr;
+				bstNode* rcurrp;
 				rcurrp = curr->left;
 				rcurr = (curr->left)->right;
 				while(rcurr->right != NULL)
@@ -213,7 +213,7 @@ bool BST::remove(int d)
 			}
 			else
 			{
-				node* tmp;
+				bstNode* tmp;
 				tmp = curr->left;
 				curr->data = tmp->data;
 				curr->left = tmp->left;
@@ -236,8 +236,8 @@ bool BST::remove(int d, char c)
 		return NULL;
 	}
 
-	node* curr;
-	node* parent;
+	bstNode* curr;
+	bstNode* parent;
 	curr = root;
 
 	while(curr != NULL)
@@ -261,9 +261,9 @@ bool BST::remove(int d, char c)
 
 
 	// 3 cases :
-	// 1. We're removing a leaf node
-	// 2. We're removing a node with a single child
-	// 3. we're removing a node with 2 children
+	// 1. We're removing a leaf bstNode
+	// 2. We're removing a bstNode with a single child
+	// 3. we're removing a bstNode with 2 children
 
 	// Node with single child
 	if((curr->left == NULL && curr->right != NULL)|| (curr->left != NULL
@@ -298,7 +298,7 @@ bool BST::remove(int d, char c)
 		return true;
 	}
 
-	//We're looking at a leaf node
+	//We're looking at a leaf bstNode
 	if( curr->left == NULL && curr->right == NULL)
 	{
 		if(parent->left == curr) parent->left = NULL;
@@ -309,10 +309,10 @@ bool BST::remove(int d, char c)
 
 
 	//Node with 2 children and c == s
-	// replace node with smallest value in right subtree
+	// replace bstNode with smallest value in right subtree
 	if (curr->left != NULL && curr->right != NULL && c == 's')
 	{
-		node* chkr;
+		bstNode* chkr;
 		chkr = curr->right;
 		if((chkr->left == NULL) && (chkr->right == NULL))
 		{
@@ -322,13 +322,13 @@ bool BST::remove(int d, char c)
 		}
 		else // right child has children
 		{
-			//if the node's right child has a left child
+			//if the bstNode's right child has a left child
 			// Move all the way down left to locate smallest element
 
 			if((curr->right)->left != NULL)
 			{
-				node* lcurr;
-				node* lcurrp;
+				bstNode* lcurr;
+				bstNode* lcurrp;
 				lcurrp = curr->right;
 				lcurr = (curr->right)->left;
 				while(lcurr->left != NULL)
@@ -343,7 +343,7 @@ bool BST::remove(int d, char c)
 			}
 			else
 			{
-				node* tmp;
+				bstNode* tmp;
 				tmp = curr->right;
 				curr->data = tmp->data;
 				curr->right = tmp->right;
@@ -355,7 +355,7 @@ bool BST::remove(int d, char c)
 	}
 	if (curr->left != NULL && curr->right != NULL && c == 'p')
 	{
-		node* chkl;
+		bstNode* chkl;
 		chkl = curr->left;
 		if((chkl->right == NULL) && (chkl->left == NULL))
 		{
@@ -365,13 +365,13 @@ bool BST::remove(int d, char c)
 		}
 		else // right child has children
 		{
-			//if the node's right child has a left child
+			//if the bstNode's right child has a left child
 			// Move all the way down left to locate smallest element
 
 			if((curr->left)->right != NULL)
 			{
-				node* rcurr;
-				node* rcurrp;
+				bstNode* rcurr;
+				bstNode* rcurrp;
 				rcurrp = curr->left;
 				rcurr = (curr->left)->right;
 				while(rcurr->right != NULL)
@@ -386,7 +386,7 @@ bool BST::remove(int d, char c)
 			}
 			else
 			{
-				node* tmp;
+				bstNode* tmp;
 				tmp = curr->left;
 				curr->data = tmp->data;
 				curr->left = tmp->left;
@@ -399,7 +399,7 @@ bool BST::remove(int d, char c)
 
 }
 
-node* BST::search(int val){
+bstNode* BST::search(int val){
 	//Locate the element
 	if(isEmpty())
 	{
@@ -407,7 +407,7 @@ node* BST::search(int val){
 		return NULL;
 	}
 
-	node* curr;
+	bstNode* curr;
 	curr = root;
 
 	while(curr != NULL)
@@ -425,7 +425,7 @@ node* BST::search(int val){
 	}
 }
 
-void BST::inorderTrav(node* p)
+void BST::inorderTrav(bstNode* p)
 {
 	if(p != NULL)
 	{
@@ -438,7 +438,7 @@ void BST::inorderTrav(node* p)
 
 void BST::inorder()
 {
-	node * p = root;
+	bstNode * p = root;
 	if(p != NULL)
 	{
 		if(p->left) inorderTrav(p->left);
@@ -449,7 +449,7 @@ void BST::inorder()
 	return;
 }
 
-void BST::inorder(node* p)
+void BST::inorder(bstNode* p)
 {
 	if(p != NULL)
 	{
@@ -463,7 +463,7 @@ void BST::inorder(node* p)
 
 void BST::preorder()
 {
-	node * p = root;
+	bstNode * p = root;
 	if(p != NULL)
 	{
 		cout<<p->data<<" ";
@@ -474,7 +474,7 @@ void BST::preorder()
 	return;
 }
 
-void BST::preorderTrav(node* p)
+void BST::preorderTrav(bstNode* p)
 {
 	if(p != NULL)
 	{
@@ -485,7 +485,7 @@ void BST::preorderTrav(node* p)
 	else return;
 }
 
-void BST::preorder(node* p)
+void BST::preorder(bstNode* p)
 {
 	if(p != NULL)
 	{
@@ -499,7 +499,7 @@ void BST::preorder(node* p)
 
 void BST::postorder()
 {
-	node * p = root;
+	bstNode * p = root;
 	if(p != NULL)
 	{
 		if(p->left) postorderTrav(p->left);
@@ -510,7 +510,7 @@ void BST::postorder()
 	return;
 }
 
-void BST::postorderTrav(node* p)
+void BST::postorderTrav(bstNode* p)
 {
 	if(p != NULL)
 	{
@@ -521,7 +521,7 @@ void BST::postorderTrav(node* p)
 	else return;
 }
 
-void BST::postorder(node* p)
+void BST::postorder(bstNode* p)
 {
 	if(p != NULL)
 	{

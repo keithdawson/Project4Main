@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <set>
+#include "heap.cpp"
 
 using namespace std;
 
@@ -9,9 +11,16 @@ int main(int argc, char *argv[]){
 	size_t size = 0; // here
 	size = in.tellg() ; // get the length of the file
 	cout << "Size of file: " << size << endl;
+	int* fileArray;
+	fileArray = new int[size];
 	in.seekg(0, ios::beg); // set the pointer to the beginning
 	for (int i =0; i<size; i++) {
 		ch = in.get();
-		cout << (int) ch << endl;
+		fileArray[i] = ch;
 	}
+
+
+	node* array;
+	array = new node[s.size()]
+	for
 }

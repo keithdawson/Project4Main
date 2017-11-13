@@ -72,7 +72,7 @@ public:
 	Heap(node a[], int);
 	Heap();
 
-	void insert(int newValue);
+	//void insert(int newValue);
 	int extract();
 	void out();
 };
@@ -212,15 +212,15 @@ void Heap::BubbleUpMin(int index)
 
 	int parentIndex = (index-1)/2;
 
-	if(dynA[parentIndex] > dynA[index])
+	if(dynA[parentIndex].vak > dynA[index].val)
 	{
-		int temp = dynA[parentIndex];
-		dynA[parentIndex] = dynA[index];
-		dynA[index] = temp;
+		int temp = dynA[parentIndex].val;
+		dynA[parentIndex].val = dynA[index].val;
+		dynA[index].val = temp;
 		BubbleUpMin(parentIndex);
 	}
 }
-
+/*
 void Heap::insert(int newValue)
 {
 	int length = dynA.length();
@@ -231,7 +231,7 @@ void Heap::insert(int newValue)
 	}
 	else BubbleUpMax(length);
 }
-
+*/
 void Heap::out(){
 	for (int i=0; i < dynA.length(); i++) {
 		cout<<dynA[i]<<' ';
