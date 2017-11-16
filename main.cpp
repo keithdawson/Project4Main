@@ -20,7 +20,8 @@ int main(int argc, char *argv[]){
 	}
 
 
-	node* array;
-	array = new node[s.size()]
-	for
+	Heap* myheap = new Heap();
+	for (int i;i<size;i++)	myheap->insert(fileArray[i]);
+	myheap->print();
+
 }
