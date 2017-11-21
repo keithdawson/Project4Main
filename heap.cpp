@@ -35,7 +35,8 @@ void Heap::insert(int element)
 int Heap::deletemin()
 {
 	int min = heap.front();
-	heap[0] = heap.at(heap.size() - 1);
+	heap[0].freq = heap.at(heap.size() - 1).freq;
+	heap[0].val = heap.at(heap.size() - 1).val;
 	heap.pop_back();
 	heapifydown(0);
 	return min;
