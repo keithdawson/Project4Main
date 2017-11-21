@@ -44,7 +44,6 @@ void Heap::insert(int frequency, int value)
 	node element;
 	element.freq = frequency;
 	element.val = value;
-	//cout<<frequency<<endl;
 	heap.push_back(element);
 	heapifyup(heap.size() - 1);
 }
@@ -52,10 +51,9 @@ void Heap::insert(int frequency, int value)
 int Heap::deletemin()
 {
 	int min = heap.front().freq;
-	cout<<heap.front().freq<<endl;
 	heap[0].freq = heap.at(heap.size() - 1).freq;
 	heap[0].val = heap.at(heap.size() - 1).val;
-	cout<<heap.front().freq<<endl;
+	cout<<heap.at(heap.size() - 1).freq<<endl;
 	heap.pop_back();
 	heapifydown(0);
 	return min;
@@ -103,6 +101,7 @@ void Heap::heapifydown(int index)
 {
 
 	int child = left(index);
+	cout<<heap[child].freq<<" "<<heap[right(index)].freq << endl;
 	if ( ( child > 0 ) && ( right(index) > 0 ) &&
 	     ( heap[child].freq > heap[right(index)].freq ) )
 	{
@@ -123,18 +122,14 @@ void Heap::heapifydown(int index)
 
 int Heap::left(int parent)
 {
-	int i = 2 * i + 1; // 2 * parent + 1
-	if ((parent*2+1)>= heap.size())
-		return -1;
-	else return i;
+	int i = ( parent << 1 ) + 1; // 2 * parent + 1
+	return ( i < heap.size() ) ? i : -1;
 }
 
 int Heap::right(int parent)
 {
-	int i = 2 * i + 2; // 2 * parent + 1
-	if ((parent*2+2)>= heap.size())
-		return -1;
-	else return i;
+	int i = ( parent << 1 ) + 2; // 2 * parent + 2
+	return ( i < heap.size() ) ? i : -1;
 }
 
 int Heap::parent(int child)
