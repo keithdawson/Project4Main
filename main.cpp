@@ -37,8 +37,8 @@ int main(int argc, char *argv[]){
 	myHeap->deletemin();
 	myHeap->print();
 	for (int i=0;i<myHeap->size();i++){
-		//cout << myHeap->minfreq()<< endl;
-		//myHeap->deletemin();
+		cout << myHeap->minfreq()<< endl;
+		myHeap->deletemin();
 	}
 /*
 	Heap* tempHeap = new Heap();

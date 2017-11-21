@@ -51,17 +51,18 @@ void Heap::insert(int frequency, int value)
 int Heap::deletemin()
 {
 	int min = heap.front().freq;
+	//print();
 	heap[0].freq = heap.at(heap.size() - 1).freq;
 	heap[0].val = heap.at(heap.size() - 1).val;
-	cout<<heap.at(heap.size() - 1).freq<<endl;
 	heap.pop_back();
+	//print();
 	heapifydown(0);
 	return min;
 }
 
 void Heap::print(){
 	for (int i=0; i<heap.size();i++){
-		cout<<heap[i].freq<< ' ';
+		cout<<heap[i].freq<< "  ";
 	}
 	cout<<endl;
 	for (int i=0; i<heap.size();i++){
@@ -101,14 +102,14 @@ void Heap::heapifydown(int index)
 {
 
 	int child = left(index);
-	cout<<heap[child].freq<<" "<<heap[right(index)].freq << endl;
+	//cout<<heap[child].freq<<" "<<heap[right(index)].freq << endl;
 	if ( ( child > 0 ) && ( right(index) > 0 ) &&
 	     ( heap[child].freq > heap[right(index)].freq ) )
 	{
-		cout<<heap[child].freq<<" "<<heap[right(index)].freq << endl;
+		//cout<<heap[child].freq<<" "<<heap[right(index)].freq << endl;
 		child = right(index);
 	}
-	if ( child > 0 )
+	if ( heap[child].freq < heap[index].freq )
 	{
 		int tmpFreq = heap[index].freq;
 		int tmpVal = heap[index].val;
@@ -118,6 +119,7 @@ void Heap::heapifydown(int index)
 		heap[child].freq = tmpFreq;
 		heapifydown(child);
 	}
+	else return;
 }
 
 int Heap::left(int parent)
