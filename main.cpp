@@ -35,11 +35,7 @@ int main(int argc, char *argv[]){
 	cout<<myHeap->size()<<endl;
 	myHeap->print();
 	myHeap->deletemin();
-	myHeap->print();
-	for (int i=0;i<myHeap->size();i++){
-		cout << myHeap->minfreq()<< endl;
-		myHeap->deletemin();
-	}
+
 /*
 	Heap* tempHeap = new Heap();
 	for (int i;i<size;i++)	tempHeap->insert(fileArray[i]);
