@@ -61,9 +61,15 @@ int main(int argc, char *argv[]){
 	treeNodeArray[parent.treeVal-128].leftTree = leafLeft.treeVal;
 	treeNodeArray[parent.treeVal-128].rightTree = leafRight.treeVal;
 	myHeap->insert(parent.treeFreq, parent.treeVal);
-	myHeap->print();
 	while(myHeap->size() != 0) {
+		treeNode temp;
+		temp.treeVal = myHeap->minval();
+		temp.treeFreq = myHeap->deletemin();
+		myHeap->insert(temp.treeFreq, temp.treeVal);
+
 		if (myHeap->minval() < 128 && myHeap->minval2() < 128) {
+			cout<<"Case 1"<<endl;
+			myHeap->print();
 			treeNode leafLeft, leafRight, parent;
 			leafLeft.treeVal = myHeap->minval();
 			leafLeft.treeFreq = myHeap->deletemin();
@@ -87,8 +93,11 @@ int main(int argc, char *argv[]){
 			treeNodeArray[parent.treeVal - 128].leftTree = leafLeft.treeVal;
 			treeNodeArray[parent.treeVal - 128].rightTree = leafRight.treeVal;
 			myHeap->insert(parent.treeFreq, parent.treeVal);
+
 		}
 		else if (myHeap->minval() >= 128 && myHeap->minval2() < 128) {
+			cout<<"Case 2"<<endl;
+			myHeap->print();
 			treeNode leafLeft, leafRight, parent;
 			leafRight.treeVal = myHeap->minval();
 			leafRight.treeFreq = myHeap->deletemin();
@@ -108,8 +117,11 @@ int main(int argc, char *argv[]){
 			treeNodeArray[parent.treeVal - 128].leftTree = leafLeft.treeVal;
 			treeNodeArray[parent.treeVal - 128].rightTree = leafRight.treeVal - 128;
 			myHeap->insert(parent.treeFreq, parent.treeVal);
+
 		}
 		else if (myHeap->minval() < 128 && myHeap->minval2() >= 128) {
+			cout<<"Case 3"<<endl;
+			myHeap->print();
 			treeNode leafLeft, leafRight, parent;
 			leafLeft.treeVal = myHeap->minval();
 			leafLeft.treeFreq = myHeap->deletemin();
@@ -129,8 +141,11 @@ int main(int argc, char *argv[]){
 			treeNodeArray[parent.treeVal - 128].leftTree = leafLeft.treeVal;
 			treeNodeArray[parent.treeVal - 128].rightTree = leafRight.treeVal-128;
 			myHeap->insert(parent.treeFreq, parent.treeVal);
+
 		}
 		else if (myHeap->minval() >= 128 && myHeap->minval2() >= 128) {
+			cout<<"Case 4"<<endl;
+			myHeap->print();
 			treeNode leafLeft, leafRight, parent;
 			leafLeft.treeVal = myHeap->minval();
 			leafLeft.treeFreq = myHeap->deletemin();
@@ -147,7 +162,6 @@ int main(int argc, char *argv[]){
 			treeNodeArray[parent.treeVal - 128].rightTree = leafRight.treeVal-128;
 			myHeap->insert(parent.treeFreq, parent.treeVal);
 		}
-		myHeap->print();
 	}
 
 
