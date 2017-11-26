@@ -8,6 +8,14 @@ struct node {
 	int val;
 };
 
+typedef struct treeNode{
+	int treeFreq;
+	int treeVal;
+	int treeCode;
+	int leftTree;
+	int rightTree;
+};
+
 class Heap {
 public:
 	Heap();
@@ -17,6 +25,7 @@ public:
 	void insert(int frequency, int value);
 	int minfreq();
 	int minval();
+	int minval2();
 	int deletemin();
 	void print();
 	int size() { return heap.size(); }
@@ -38,6 +47,9 @@ int Heap::minfreq() {
 }
 int Heap::minval() {
 	return heap.front().val;
+}
+int Heap::minval2() {
+	return heap.at(1).val;
 }
 void Heap::insert(int frequency, int value)
 {
