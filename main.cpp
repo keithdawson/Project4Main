@@ -1,22 +1,23 @@
 #include <iostream>
 #include <fstream>
-#include <string.h>
-//#include "heap.cpp"
 #include "nodeHeap.cpp"
-//#include "btree.cpp"
+
 
 using namespace std;
 void printInorder(int index);
 void printPreorder(int index);
 void coutInorder(int index);
 void coutPreorder(int index);
+void getEncoding(int index, string s);
 treeNode treeNodeArray[128];
 ofstream infile;
 ofstream prefile;
+ofstream codefile;
+string encodeArray[128];
 
 int main(int argc, char *argv[]){
 	unsigned char ch;
-	int countUp = 128;
+	int countUp = 129;
 	ifstream in(argv[1],ios::in|ios::binary|ios::ate);
 	size_t size = 0; // here
 	size = in.tellg() ; // get the length of the file
@@ -41,7 +42,7 @@ int main(int argc, char *argv[]){
 			myHeap->insert(asciiArray[i], i);
 		}
 	}
-
+	//empty the array
 	for (int i =0; i<128;i++){
 		treeNodeArray[i].treeFreq = NULL;
 		treeNodeArray[i].treeVal = NULL;
@@ -49,6 +50,7 @@ int main(int argc, char *argv[]){
 		treeNodeArray[i].leftTree = NULL;
 		treeNodeArray[i].rightTree = NULL;
 	}
+	//Start of building tree 4 cases which switch when necessary
 	treeNode leafLeft, leafRight, parent;
 	leafLeft.treeVal = myHeap->minval();
 	leafLeft.treeFreq = myHeap->deletemin();
@@ -160,8 +162,9 @@ int main(int argc, char *argv[]){
 	int rootIndex = countUp-129;
 	infile.open("inorder.txt");
 	prefile.open("preorder.txt");
+	codefile.open("code.txt");
 	//coutInorder(rootIndex);
-	//coutPreorder(rootIndex);
+	//coutPreorder(rootIndex); //personal debugging
 	printInorder(rootIndex);
 	printPreorder(rootIndex);
 
@@ -172,11 +175,27 @@ int main(int argc, char *argv[]){
 		cout << treeNodeArray[i].leftTree << ' ';
 		cout << treeNodeArray[i].rightTree << endl;
 	}*/
-	int leftDepth, rightdepth;
+	string s = "";
+	getEncoding(rootIndex, s);
+	for (int i=0; i<size; i++){
+		string encode;
+		encode = encodeArray[fileArray[i]];
+		codefile << encode;
+	}
+	infile.close();
+	prefile.close();
+	codefile.close();
  }
-string getEncoding(int value){
-	string encoding;
-	treeNodeArray[value]
+void getEncoding(int index, string s){
+	if (treeNodeArray[index].leftTree != NULL){
+		getEncoding(treeNodeArray[index].leftTree, s+ '0');
+	}
+	if (treeNodeArray[index].rightTree != NULL){
+		getEncoding(treeNodeArray[index].rightTree, s+ '1');
+	}
+	if (treeNodeArray[index].leftTree == NULL && treeNodeArray[index].rightTree == NULL) {
+		encodeArray[treeNodeArray[index].treeVal] = s;
+	}
 }
 void coutInorder(int index)
 {
