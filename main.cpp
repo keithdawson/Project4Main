@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <set>
+#include <string.h>
 //#include "heap.cpp"
 #include "nodeHeap.cpp"
 //#include "btree.cpp"
@@ -174,6 +174,10 @@ int main(int argc, char *argv[]){
 	}*/
 	int leftDepth, rightdepth;
  }
+string getEncoding(int value){
+	string encoding;
+	treeNodeArray[value]
+}
 void coutInorder(int index)
 {
 	if (treeNodeArray[index].leftTree == NULL && treeNodeArray[index].rightTree == NULL) {
