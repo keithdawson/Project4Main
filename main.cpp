@@ -6,7 +6,13 @@
 //#include "btree.cpp"
 
 using namespace std;
-
+void printInorder(int index);
+void printPreorder(int index);
+void coutInorder(int index);
+void coutPreorder(int index);
+treeNode treeNodeArray[128];
+ofstream infile;
+ofstream prefile;
 
 int main(int argc, char *argv[]){
 	unsigned char ch;
@@ -35,9 +41,14 @@ int main(int argc, char *argv[]){
 			myHeap->insert(asciiArray[i], i);
 		}
 	}
-	treeNode treeNodeArray[128];
-	cout<<myHeap->size()<<endl;
-	myHeap->print();
+
+	for (int i =0; i<128;i++){
+		treeNodeArray[i].treeFreq = NULL;
+		treeNodeArray[i].treeVal = NULL;
+		treeNodeArray[i].treeCode = NULL;
+		treeNodeArray[i].leftTree = NULL;
+		treeNodeArray[i].rightTree = NULL;
+	}
 	treeNode leafLeft, leafRight, parent;
 	leafLeft.treeVal = myHeap->minval();
 	leafLeft.treeFreq = myHeap->deletemin();
@@ -61,24 +72,19 @@ int main(int argc, char *argv[]){
 	treeNodeArray[parent.treeVal-128].leftTree = leafLeft.treeVal;
 	treeNodeArray[parent.treeVal-128].rightTree = leafRight.treeVal;
 	myHeap->insert(parent.treeFreq, parent.treeVal);
-	while(myHeap->size() != 0) {
-		treeNode temp;
-		temp.treeVal = myHeap->minval();
-		temp.treeFreq = myHeap->deletemin();
-		myHeap->insert(temp.treeFreq, temp.treeVal);
+	while(myHeap->size() != 1) {
 
-		if (myHeap->minval() < 128 && myHeap->minval2() < 128) {
-			cout<<"Case 1"<<endl;
-			myHeap->print();
-			treeNode leafLeft, leafRight, parent;
-			leafLeft.treeVal = myHeap->minval();
-			leafLeft.treeFreq = myHeap->deletemin();
+		treeNode leafLeft, leafRight;
+		leafLeft.treeVal = myHeap->minval();
+		leafLeft.treeFreq = myHeap->deletemin();
+		leafRight.treeVal = myHeap->minval();
+		leafRight.treeFreq = myHeap->deletemin();
+		if (leafLeft.treeVal < 128 && leafRight.treeVal < 128) {
+			treeNode parent;
 			treeNodeArray[leafLeft.treeVal].treeVal = leafLeft.treeVal;
 			treeNodeArray[leafLeft.treeVal].treeFreq = leafLeft.treeFreq;
 			treeNodeArray[leafLeft.treeVal].leftTree = NULL;
 			treeNodeArray[leafLeft.treeVal].rightTree = NULL;
-			leafRight.treeVal = myHeap->minval();
-			leafRight.treeFreq = myHeap->deletemin();
 			treeNodeArray[leafRight.treeVal].treeVal = leafRight.treeVal;
 			treeNodeArray[leafRight.treeVal].treeFreq = leafRight.treeFreq;
 			treeNodeArray[leafRight.treeVal].leftTree = NULL;
@@ -95,14 +101,14 @@ int main(int argc, char *argv[]){
 			myHeap->insert(parent.treeFreq, parent.treeVal);
 
 		}
-		else if (myHeap->minval() >= 128 && myHeap->minval2() < 128) {
-			cout<<"Case 2"<<endl;
-			myHeap->print();
-			treeNode leafLeft, leafRight, parent;
-			leafRight.treeVal = myHeap->minval();
-			leafRight.treeFreq = myHeap->deletemin();
-			leafLeft.treeVal = myHeap->minval();
-			leafLeft.treeFreq = myHeap->deletemin();
+		else if (leafLeft.treeVal >= 128 && leafRight.treeVal < 128) {
+			treeNode tempLeaf, parent;
+			tempLeaf.treeVal = leafRight.treeVal;
+			tempLeaf.treeFreq = leafLeft.treeFreq;
+			leafRight.treeVal = leafLeft.treeVal;
+			leafRight.treeFreq = leafLeft.treeFreq;
+			leafLeft.treeVal = tempLeaf.treeVal;
+			leafLeft.treeFreq = tempLeaf.treeFreq;
 			treeNodeArray[leafLeft.treeVal].treeVal = leafLeft.treeVal;
 			treeNodeArray[leafLeft.treeVal].treeFreq = leafLeft.treeFreq;
 			treeNodeArray[leafLeft.treeVal].leftTree = NULL;
@@ -119,18 +125,12 @@ int main(int argc, char *argv[]){
 			myHeap->insert(parent.treeFreq, parent.treeVal);
 
 		}
-		else if (myHeap->minval() < 128 && myHeap->minval2() >= 128) {
-			cout<<"Case 3"<<endl;
-			myHeap->print();
-			treeNode leafLeft, leafRight, parent;
-			leafLeft.treeVal = myHeap->minval();
-			leafLeft.treeFreq = myHeap->deletemin();
+		else if (leafLeft.treeVal < 128 && leafRight.treeVal >= 128) {
+			treeNode parent;
 			treeNodeArray[leafLeft.treeVal].treeVal = leafLeft.treeVal;
 			treeNodeArray[leafLeft.treeVal].treeFreq = leafLeft.treeFreq;
 			treeNodeArray[leafLeft.treeVal].leftTree = NULL;
 			treeNodeArray[leafLeft.treeVal].rightTree = NULL;
-			leafRight.treeVal = myHeap->minval();
-			leafRight.treeFreq = myHeap->deletemin();
 			parent.treeVal = countUp;
 			countUp++;
 			parent.treeFreq = leafLeft.treeFreq + leafRight.treeFreq;
@@ -143,14 +143,8 @@ int main(int argc, char *argv[]){
 			myHeap->insert(parent.treeFreq, parent.treeVal);
 
 		}
-		else if (myHeap->minval() >= 128 && myHeap->minval2() >= 128) {
-			cout<<"Case 4"<<endl;
-			myHeap->print();
-			treeNode leafLeft, leafRight, parent;
-			leafLeft.treeVal = myHeap->minval();
-			leafLeft.treeFreq = myHeap->deletemin();
-			leafRight.treeVal = myHeap->minval();
-			leafRight.treeFreq = myHeap->deletemin();
+		else if (leafLeft.treeVal >= 128 && leafRight.treeVal >= 128) {
+			treeNode parent;
 			parent.treeVal = countUp;
 			countUp++;
 			parent.treeFreq = leafLeft.treeFreq + leafRight.treeFreq;
@@ -163,24 +157,71 @@ int main(int argc, char *argv[]){
 			myHeap->insert(parent.treeFreq, parent.treeVal);
 		}
 	}
+	int rootIndex = countUp-129;
+	infile.open("inorder.txt");
+	prefile.open("preorder.txt");
+	//coutInorder(rootIndex);
+	//coutPreorder(rootIndex);
+	printInorder(rootIndex);
+	printPreorder(rootIndex);
 
-
-/*
-	Heap* tempHeap = new Heap();
-	for (int i;i<size;i++)	tempHeap->insert(fileArray[i]);
-	tempHeap->print();
-	int prevInt = tempHeap->deletemin();
-	int insertInt = prevInt;
-	Heap* myHeap = new Heap();
-	myHeap->insert(insertInt);
-	for (int i=1;i<size;i++){
-		insertInt = tempHeap->deletemin();
-		if (insertInt!=prevInt){
-			myHeap->insert(insertInt);
-		}
-		prevInt = insertInt;
-	}
-	size = myHeap->size();
-	myHeap->print();
-*/
+	/*for (int i =0; i<128;i++){
+		cout << treeNodeArray[i].treeFreq << ' ';
+		cout << treeNodeArray[i].treeVal << ' ';
+		//treeNodeArray[i].treeCode ;
+		cout << treeNodeArray[i].leftTree << ' ';
+		cout << treeNodeArray[i].rightTree << endl;
+	}*/
+	int leftDepth, rightdepth;
  }
+void coutInorder(int index)
+{
+	if (treeNodeArray[index].leftTree == NULL && treeNodeArray[index].rightTree == NULL) {
+		cout << (treeNodeArray[index].treeVal) << endl;
+		return;
+	}
+
+	if(treeNodeArray[index].leftTree != NULL) coutInorder(treeNodeArray[index].leftTree);
+
+	cout << (treeNodeArray[index].treeVal) << endl;
+
+	if(treeNodeArray[index].rightTree != NULL) coutInorder(treeNodeArray[index].rightTree);
+}
+void coutPreorder(int index)
+{
+	if (treeNodeArray[index].leftTree == NULL && treeNodeArray[index].rightTree == NULL){
+		cout << (treeNodeArray[index].treeVal) << endl;
+		return;
+	}
+	cout << (treeNodeArray[index].treeVal) << endl;
+
+	if(treeNodeArray[index].leftTree != NULL) coutPreorder(treeNodeArray[index].leftTree);
+
+	if(treeNodeArray[index].rightTree != NULL) coutPreorder(treeNodeArray[index].rightTree);
+}
+void printInorder(int index)
+{
+	if (treeNodeArray[index].leftTree == NULL && treeNodeArray[index].rightTree == NULL) {
+		infile.put(treeNodeArray[index].treeVal);
+		return;
+	}
+
+	if(treeNodeArray[index].leftTree != NULL) printInorder(treeNodeArray[index].leftTree);
+
+	infile.put(treeNodeArray[index].treeVal);
+
+	if(treeNodeArray[index].rightTree != NULL) printInorder(treeNodeArray[index].rightTree);
+}
+
+void printPreorder(int index)
+{
+	if (treeNodeArray[index].leftTree == NULL && treeNodeArray[index].rightTree == NULL){
+		prefile.put(treeNodeArray[index].treeVal);
+		return;
+	}
+	prefile.put(treeNodeArray[index].treeVal);
+
+	if(treeNodeArray[index].leftTree != NULL) printPreorder(treeNodeArray[index].leftTree);
+
+	if(treeNodeArray[index].rightTree != NULL) printPreorder(treeNodeArray[index].rightTree);
+}
